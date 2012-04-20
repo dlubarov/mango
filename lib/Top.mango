@@ -1,0 +1,33 @@
+module core;
+
+#
+
+public type Top {
+  public sealed Option[T] tryCast[T]() {
+    # native code
+  }
+
+  public sealed T cast[T]() {
+    return this.tryCast[T]().get();
+  }
+
+  public sealed Bool isInstanceOf[T]() {
+    return !this.tryCast[T]().isEmpty();
+  }
+
+  public Bool ==(Top that) {
+    # native code
+  }
+
+  public Bool !=(Top that) {
+    return !(this == that);
+  }
+
+  public Int hashCode() {
+    # native code
+  }
+
+  public String toString() {
+    # native code
+  }
+}

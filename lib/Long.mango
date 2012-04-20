@@ -1,0 +1,29 @@
+module core;
+
+#
+
+public sealed type Long extends NaturallyOrdered[Long] {
+  public Unit init(Byte n) {}
+  public Unit init(Int n) {}
+  public Unit init(Char n) {}
+
+  # Unary operations.
+  public Long +() {}
+  public Long -() {}
+  public Long ~() {}
+
+  # Basic arithmetic.
+  public Long |(Long that) {}
+  public Long ^(Long that) {}
+  public Long &(Long that) {}
+  public Long +(Long that) {}
+  public Long -(Long that) {}
+  public Long *(Long that) {}
+  public Long /(Long that) {}
+  public Long %(Long that) {}
+
+  # Top methods
+  public Bool ==(Top that) {}
+  public Int hashCode() {}
+  public String toString() {}
+}

@@ -1,0 +1,43 @@
+module core;
+
+# A standard hash set (aka hash table) with separate chaining.
+
+public type HashSet[A] extends MutableSet[A] {
+  public Unit init() {
+    # TODO
+  }
+
+  public Unit init(Collection[A] source) {
+    this.init();
+    foreach (A elem in source)
+      this += elem;
+  }
+
+  public Unit +=(A value) {
+    # TODO
+  }
+
+  public Unit -=(A value) {
+    # TODO
+  }
+}
+
+public type FrozenHashSet[+A] extends ImmutableSet[A] {
+  public static readonly FrozenHashSet[Bottom] empty = new FrozenHashSet[Bottom]();
+
+  private readonly HashSet[A] store;
+
+  private Unit init() {}
+
+  public Unit init(Collection[A] source) {
+    this.store = new HashSet[A](source);
+  }
+
+  public Bool contains(A value) {
+    return this.store.contains(value);
+  }
+
+  public Int size() {
+    return this.store.size();
+  }
+}

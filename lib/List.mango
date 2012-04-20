@@ -1,0 +1,55 @@
+module core;
+
+# A List is a singly-linked list structure.
+
+public abstract type List[+A] extends ImmutableSequence[A] {
+  public static readonly List[Bottom] empty = EmptyList();
+
+  public List[A] :(A value) {
+    return new NonEmptyList(value, this);
+  }
+
+  public FiniteSource[A] enumerator() {
+    return new ListEnumerator[A](this);
+  }
+}
+
+sealed type EmptyList extends List[Bottom] {
+  private static EmptyList singleton = new EmptyList();
+
+  static Unit get() {
+    return EmptyList.singleton;
+  }
+
+  private Unit init() {}
+}
+
+type NonEmptyList[+A] extends List[A] {
+  readonly A head;
+  readonly List[A] rest;
+
+  Unit init(A head, List[A] rest) {
+    this.head = head;
+    this.rest = rest;
+  }
+}
+
+type ListEnumerator[+A] extends FiniteSource[A] {
+  private List[A] current;
+
+  public Unit init(List[A] source) {
+    this.current = source;
+  }
+
+  public Option[A] tryTake() {
+    switch (this.current) {
+      EmptyList _ ->
+        return None();
+      NonEmptyList l ->
+        this.current = l.rest;
+        return new Some[A](l.head);
+      other ->
+        1 / 0; # fail
+    }
+  }
+}

@@ -1,0 +1,45 @@
+module core;
+
+public abstract type Option[+A] extends Collection[A] {
+  public A get();
+
+  # TODO: map, map
+
+  public Option[A] filter(Function1[A, Bool] p);
+}
+
+public type Some[+A] extends Option[A] {
+  private readonly A value;
+
+  public Unit init(A value) {
+    this.value = value;
+  }
+
+  public Option[A] filter(Function1[A, Bool] p) {
+    if (p(this.value))
+      return this;
+    return None();
+  }
+
+  public FiniteSource[A] enumerator() {
+    return new SingletonSource[A](this.value);
+  }
+}
+
+public type None extends Option[Bottom] {
+  private static readonly None singleton = new None();
+
+  private Unit init() {}
+
+  public static Unit get() {
+    return None.singleton;
+  }
+
+  public None filter(Function1[Bottom, Bool] p) {
+    return this;
+  }
+
+  public FiniteSource[Bottom] enumerator() {
+    return EmptySource();
+  }
+}

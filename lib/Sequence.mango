@@ -1,0 +1,110 @@
+module core;
+
+# A Sequence is a Collection of elements arranged in some meaningful order.
+# This could be insertion order, the natural order of elements, or something
+# different entirely, as long as the order is consistent and not arbitrary.
+
+# TODO: subsequence
+
+public abstract type Sequence[+A] extends Collection[A] {
+  public Option[A] tryGet(Int index) {
+    FiniteSource[A] enum = this.enumerator();
+    repeat (index)
+      enum.tryTake();
+    return enum.tryTake();
+  }
+
+  public A get(Int index) {
+    return this.tryGet(index).get();
+  }
+
+  public A getFront() {
+    return this(0);
+  }
+
+  public A getBack() {
+    return this(this.size() - 1);
+  }
+
+  public Sequence[A] getFront(Int n) {
+    return this.enumerator().take(n);
+  }
+
+  public Sequence[A] getBack(Int n) {
+    return this.reverse().getFront(n);
+  }
+
+  public Sequence[A] +(Sequence[A] that) {
+    # TODO
+  }
+
+  # Repeat this sequence some number of times.
+  public Sequence[A] *(Int n) {
+    OptionArray[A] result = new OptionArray[A](n);
+    Int l = this.size();
+    for (Int i in 0...l * n)
+      result(i) = this(i % l);
+    return result;
+  }
+
+  public ImmutableSequence[A] toImmutable() {
+    return new FrozenArray[A](this);
+  }
+}
+
+# A MutableSequence is a Sequence with the capability of replacing elements
+# at random indices.
+
+# Note that not every sequence with mutating methods should extend this type.
+# For example:
+#   - MutableStack is a Sequence with a mutating pushBack method, but
+#     it does not require the random writing capability.
+# This type could have been called RandomlyWritableSequence, but that might
+# be confusing and annoyingly long.
+
+public abstract type MutableSequence[A] extends Sequence[A] {
+  public A set(Int index, A value);
+
+  public Unit fill(A value) {
+    foreach (Int i in 0...this.size())
+      this(i) = value;
+  }
+
+  public Unit replaceAll(A a, B b) {
+    foreach (Int i in 0...this.size())
+      if (this(i) == a)
+        this(i) = b;
+  }
+
+  public Unit reverse() {
+    # TODO
+  }
+}
+
+public abstract type ImmutableSequence[+A] extends Sequence[A], ImmutableCollection[A] {
+  [B > A]
+  public ImmutableSequence[B] replaceAll[B](A a, B b) {
+    OptionArray[A] result = new OptionArray[A](n);
+    foreach (Int i in 0...this.size())
+      if (this(i) == a)
+        result(i) = b;
+      else
+        result(i) = this(i);
+    return result;
+  }
+
+  public ImmutableSequence[A] replaceAll(A a, A b) {
+    return this.replaceAll[A](a, b);
+  }
+
+  public ImmutableList[A] reverse() {
+    List[A] result = EmptyList();
+    foreach (A elem in this)
+      result = elem : result;
+    return result;
+  }
+
+  public ImmutableSequence[A] toImmutable() {
+    return this;
+  }
+}

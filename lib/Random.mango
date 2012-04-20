@@ -1,0 +1,22 @@
+module core;
+
+import math.*;
+
+public abstract type Random {
+  private static readonly Random standardPRNG = new LinearCongruentialGenerator();
+
+  public static Random get() {
+    return Random.standardPRNG;
+  }
+
+  public Long nextLong();
+
+  # Generates a Long between 0 (inclusive) and limit (exclusive).
+  public Long nextLong(Int limit) {
+    return this.nextPositiveLong() % limit;
+  }
+
+  public Int nextInt() {
+    return new Int(this.nextLong());
+  }
+}

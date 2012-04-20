@@ -1,0 +1,80 @@
+module core;
+
+# A Set is a Collection which contains no duplicate values.
+
+public type Set[+A] extends Collection[A] {
+  public Bool contains(A value);
+
+  public Int count(A value) {
+    if (this.contains(value))
+      return 1;
+    return 0;
+  }
+
+  public ImmutableSet[A] toImmutable() {
+    return new FrozenHashSet[A](this);
+  }
+
+  public Set[A] |(Set[A] that) {
+    HashSet[A] result = new HashSet[A]();
+    for (A elem in this)
+      result += elem;
+    for (A elem in that)
+      result += elem;
+    return result;
+  }
+
+  public Set[A] ^(Set[A] that) {
+    HashSet[A] result = new HashSet[A]();
+    for (A elem in this)
+      if (!that.contains(elem))
+        result += elem;
+    for (A elem in that)
+      if (!this.contains(elem))
+        result += elem;
+    return result;
+  }
+
+  public Set[A] &(Set[A] that) {
+    HashSet[A] result = new HashSet[A]();
+    for (A elem in this)
+      if (that.contains(elem))
+        result += elem;
+    return result;
+  }
+}
+
+# A MutableSet is a Set with simple methods for adding and removing values.
+
+public type MutableSet[A] extends Set[A] {
+  public Unit +=(A value);
+  public Unit -=(A value);
+}
+
+# An ImmutableSet is a set whose contents never change.
+
+public type ImmutableSet[+A] extends Set[A], ImmutableCollection[A] {
+  public ImmutableSet[A] |(Set[A] that) {
+    return Set.|(this, that).toImmutable();
+  }
+
+  public ImmutableSet[A] ^(Set[A] that) {
+    return Set.^(this, that).toImmutable();
+  }
+
+  public ImmutableSet[A] &(Set[A] that) {
+    return Set.&(this, that).toImmutable();
+  }
+
+  public ImmutableSet[A] +(A value) {
+    # TODO (generics dilemma...)
+  }
+
+  public ImmutableSet[A] -(A value) {
+    # TODO
+  }
+
+  public ImmutableSet[A] toImmutable() {
+    return this;
+  }
+}

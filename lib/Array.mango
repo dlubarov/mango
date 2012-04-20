@@ -1,0 +1,60 @@
+module core;
+
+#
+
+public sealed type Array[A] extends MutableSequence[A],
+                                    RandomlyEnumeratedSequence[A] {
+  public Unit init(Source[A] source) {
+    # native code
+  }
+
+  public Unit init(Collection[A] source) {
+    this.init(source.enumerator());
+  }
+
+  public A get(Int index) {
+    # native code
+  }
+
+  public A set(Int index, A value) {
+    # native code
+  }
+}
+
+public sealed type FrozenArray[+A] extends MutableSequence[A],
+                                           RandomlyEnumeratedSequence[A] {
+  public Unit init(Source[A] source) {
+    # native code
+  }
+
+  public Unit init(Collection[A] source) {
+    this.init(source.enumerator());
+  }
+
+  public A get(Int index) {
+    # native code
+  }
+}
+
+public sealed type OptionArray[A] extends MutableSequence[A],
+                                          RandomlyEnumeratedSequence[A] {
+  public Unit init(Int length) {
+    # native code
+  }
+
+  public Option[A] tryGet(Int index) {
+    # native code
+  }
+
+  public A get(Int index) {
+    # native code
+  }
+
+  public A set(Int index, A value) {
+    # native code
+  }
+
+  public Unit clear(Int index) {
+    # native code
+  }
+}

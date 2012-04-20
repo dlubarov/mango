@@ -1,0 +1,59 @@
+module core;
+
+#
+
+public type DynamicArray[A] extends MutableStack[A],
+                                    RandomlyEnumerableSequence[A] {
+  private OptionArray[A] store;
+  private Int len;
+
+  public Unit init(Int capacity) {
+    this.store = new OptionArray[A](capacity);
+    this.len = 0;
+  }
+
+  public Unit init() {
+    this.init(4);
+  }
+
+  public Unit init(Collection[A] source) {
+    this.init(source.size());
+    foreach (A elem in source)
+      this.pushBack(elem);
+  }
+
+  public Maybe[A] tryGet(Int index) {
+    return this.store.tryGet(index);
+  }
+
+  public A set(Int index, A value) {
+    if (index >= this.len)
+      1 / 0; # fail
+    this.store(index) = value;
+  }
+
+  private Unit resize(Int newCapacity) {
+    OptionArray[A] newStore = new OptionArray[A](newCapacity);
+    for (Int i = 0; i < this.len; ++i)
+      newStore(i) = this.store(i);
+    this.store = newStore;
+  }
+
+  public Unit pushBack(A value) {
+    if (this.len == this.store.size())
+      this.resize(this.store.size() * 2);
+    this.store(this.len++) = value;
+  }
+
+  public A popBack() {
+    if (this.len == 0)
+      1 / 0; # fail
+    this.store.clear(--this.len);
+    if (this.len < this.backingArray.size() / 4)
+      this.resize(this.backingArray.size() / 2);
+  }
+
+  Int size() {
+    return this.len;
+  }
+}

@@ -1,0 +1,20 @@
+module core;
+
+public abstract type RandomlyEnumerableSequence[+A] extends Sequence[A] {
+  public FiniteSource[A] enumerator() {
+    return new RandomAccessEnumerator[A](this);
+  }
+}
+
+public type RandomAccessEnumerator[+A] extends FiniteSource[A] {
+  private readonly Sequence[A] subject;
+  private Int index = 0;
+
+  public Unit init(Sequence[A] subject) {
+    this.subject = subject;
+  }
+
+  public Option[A] tryTake() {
+    return this.subject.tryGet(this.index++);
+  }
+}

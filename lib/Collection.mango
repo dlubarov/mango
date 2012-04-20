@@ -1,0 +1,42 @@
+module core;
+
+#
+
+public abstract type Collection[+A] {
+  public FiniteSource[A] enumerator();
+
+  public Int size() {
+    Int n = 0;
+    foreach (A elem in this)
+      ++n;
+    return n;
+  }
+
+  public Int count(Top value) {
+    Int n = 0;
+    foreach (A elem in this)
+      if (elem == value)
+        ++n;
+    return n;
+  }
+
+  public Bool contains(Top value) {
+    return this.count(value) > 0;
+  }
+
+  public ImmutableCollection[A] toImmutable() {
+    return new FrozenArray[A](this);
+  }
+
+  # FIXME: decide on ==, hashCode?
+
+  public String toString() {
+    # TODO
+  }
+}
+
+public abstract type ImmutableCollection[+A] extends Collection[A] {
+  public ImmutableCollection[A] toImmutable() {
+    return this;
+  }
+}

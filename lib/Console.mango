@@ -1,0 +1,61 @@
+module core;
+
+#
+
+public type StandardInput extends FiniteSource[Char] {
+  private static readonly StandardInput singleton = new StandardInput();
+
+  public static StandardInput get() {
+    return StandardInput.singleton;
+  }
+
+  private Unit init() {}
+}
+
+public type StandardOutput extends Sink[Char] {
+  private static readonly StandardOutput singleton = new StandardInput();
+
+  public static StandardOutput get() {
+    return StandardOutput.singleton;
+  }
+
+  private Unit init() {}
+}
+
+public type StandardError extends Sink[Char] {
+  private static readonly StandardError singleton = new StandardInput();
+
+  public static StandardError get() {
+    return StandardError.singleton;
+  }
+
+  private Unit init() {}
+}
+
+public abstract type Console {
+  public static Unit out(Object o) {
+    StandardOutput().giveAll(o.toString());
+  }
+
+  public static Unit err(Object o) {
+    StandardError().giveAll(o.toString());
+  }
+
+  public static Unit outln() {
+    StandardOutput().give('\n');
+  }
+
+  public static Unit errln() {
+    StandardError().give('\n');
+  }
+
+  public static Unit outln(Object o) {
+    StandardOutput().giveAll(o.toString());
+    StandardOutput().give('\n');
+  }
+
+  public static Unit errln(Object o) {
+    StandardError().giveAll(o.toString());
+    StandardError().give('\n');
+  }
+}

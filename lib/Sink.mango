@@ -1,0 +1,13 @@
+module core;
+
+#
+
+public abstract type Sink[-A] {
+  public Top give(A value);
+
+  public Top giveAll(Collection[A] values) {
+    for (A value in values)
+      this.give(value);
+    return unit;
+  }
+}

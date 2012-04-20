@@ -1,0 +1,29 @@
+module core;
+
+#
+
+public sealed type Int extends NaturallyOrdered[Int] {
+  public Unit init(Byte n) {}
+  public Unit init(Long n) {}
+  public Unit init(Char n) {}
+
+  # Unary operations.
+  public Int +() {}
+  public Int -() {}
+  public Int ~() {}
+
+  # Basic arithmetic.
+  public Int |(Int that) {}
+  public Int ^(Int that) {}
+  public Int &(Int that) {}
+  public Int +(Int that) {}
+  public Int -(Int that) {}
+  public Int *(Int that) {}
+  public Int /(Int that) {}
+  public Int %(Int that) {}
+
+  # Top methods
+  public Bool ==(Top that) {}
+  public Int hashCode() {}
+  public String toString() {}
+}

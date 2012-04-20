@@ -1,0 +1,29 @@
+module core;
+
+#
+
+public sealed type Byte extends NaturallyOrdered[Byte] {
+  public Unit init(Int n) {}
+  public Unit init(Long n) {}
+  public Unit init(Char n) {}
+
+  # Unary operations.
+  public Byte +() {}
+  public Byte -() {}
+  public Byte ~() {}
+
+  # Basic arithmetic.
+  public Byte |(Byte that) {}
+  public Byte ^(Byte that) {}
+  public Byte &(Byte that) {}
+  public Byte +(Byte that) {}
+  public Byte -(Byte that) {}
+  public Byte *(Byte that) {}
+  public Byte /(Byte that) {}
+  public Byte %(Byte that) {}
+
+  # Top methods
+  public Bool ==(Top that) {}
+  public Int hashCode() {}
+  public String toString() {}
+}
